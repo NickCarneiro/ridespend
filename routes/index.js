@@ -1,7 +1,7 @@
 var express = require('express');
 var google = require('googleapis');
 var router = express.Router();
-var config = require('./config');
+var config = require('../config');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
 
   var url = oauth2Client.generateAuthUrl({
     access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
-    scope: 'email'
+    scope: 'https://www.googleapis.com/auth/gmail.readonly'
   });
   res.render('index', { title: 'WOOOO', authUrl: url });
 });
