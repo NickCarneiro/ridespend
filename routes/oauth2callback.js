@@ -8,10 +8,42 @@ var gmail = google.gmail('v1');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
+    var emailAddress = 'burthawk101@gmail.com';
+    var messages = [];
     var OAuth2 = google.auth.OAuth2;
     var oauth2Client = new OAuth2(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI);
 
     var authCode = req.param('code');
+    var totalMessages = 0;
+    var processEmails = function(error, response) {
+        console.log('email results:');
+        console.log(response);
+
+        totalMessages = response.messages.length;
+        var messages = [];
+        response.messages.forEach(function(message) {
+            console.log('downloading message ' + message.id);
+            var params = {
+                userId: emailAddress,
+                id: message.id,
+                auth: oauth2Client
+            };
+            gmail.users.messages.get(params, handleMessageResponse);
+        });
+    };
+
+    var handleMessageResponse = function(error, response) {
+        console.log('received message: ' + messages.length);
+
+        var encodedBody = response.payload.parts[1].body.data;
+        var decodedBody = new Buffer(encodedBody, 'base64').toString('utf-8');
+        console.log(decodedBody);
+        messages.push(decodedBody);
+        if (messages.length >= totalMessages) {
+            console.log('received all messages');
+            res.send(JSON.stringify(messages));
+        }
+    };
 
     //if (req.session.authCode) {
     //    res.send('authCode saved previously in session: ' + req.session.authCode);
@@ -28,12 +60,6 @@ router.get('/', function(req, res) {
             console.log('token error');
         }
 
-        var emailAddress = 'burthawk101@gmail.com';
-        var processEmails = function(error, response) {
-            console.log('email results:');
-            console.log(response);
-            res.send('got emails');
-        };
         var params = {
             userId: emailAddress,
             q: 'from:no-reply@lyftmail.com',
@@ -43,5 +69,6 @@ router.get('/', function(req, res) {
     });
 
 });
+
 
 module.exports = router;
