@@ -1,6 +1,8 @@
 var express = require('express');
 var google = require('googleapis');
 var config = require('../config');
+var parseEmail = require('../parseemail');
+var lyftReport = require('../lyftreport');
 
 
 var router = express.Router();
@@ -41,7 +43,15 @@ router.get('/', function(req, res) {
         messages.push(decodedBody);
         if (messages.length >= totalMessages) {
             console.log('received all messages');
-            res.send(JSON.stringify(messages));
+            var parsedMessages = [];
+
+            // Array.forEach is blocking
+            messages.forEach(function(message, i) {
+                var parsedLyftEmail = parseEmail.parseLyftEmail(message);
+                parsedMessages.push(parsedLyftEmail);
+            });
+            var lyftReport = lyftReport.generateLyftReport(parsedMessages);
+            res.send(JSON.stringify(lyftReport));
         }
     };
 

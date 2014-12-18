@@ -1,13 +1,16 @@
+var fs = require('fs');
 var test = require('tape');
 var cheerio = require('cheerio');
-var parser = require('../parseemail')
-var fs = require('fs');
+var parser = require('../parseemail');
+var lyftReport = require('../lyftreport');
 
 var lyftEmail = fs.readFileSync('email1.html', 'utf-8');
 var lyftEmailDom = cheerio.load(lyftEmail);
 
 var lyftLineEmail = fs.readFileSync('email2.html', 'utf-8');
 var lyftLineEmailDom = cheerio.load(lyftLineEmail);
+
+var primeTimeAndRegularTipEmail = fs.readFileSync('email3.html', 'utf-8');
 
 test('lyft email - driver name', function (t) {
     t.equal(parser.parseDriverName(lyftEmailDom), 'Kelly');
@@ -84,4 +87,37 @@ test('lyft email - entire email', function (t) {
     t.equal(Object.keys(parsedEmail).length, 12);
     t.equal(parsedEmail['driverName'], 'Kelly');
     t.end();
+});
+
+test('lyft report - two emails', function(t) {
+    var parsedLyftEmail = parser.parseLyftEmail(lyftEmail);
+    var parsedLyftLineEmail = parser.parseLyftEmail(lyftLineEmail);
+    var parsedPrimeTimeAndRegularTipEmail = parser.parseLyftEmail(primeTimeAndRegularTipEmail);
+    var emailList = [parsedLyftEmail, parsedLyftLineEmail, parsedPrimeTimeAndRegularTipEmail];
+
+    var report = lyftReport.generateLyftReport(emailList);
+    console.log(report);
+    var expectedReport = { totalRides: 3,
+        totalCost: 28,
+        averageCost: 9.333333333333334,
+        mostExpensiveRide: 1,
+        leastExpensiveRide: 0,
+        longestRide: 2,
+        shortestRide: 0,
+        totalDistanceTraveled: 1.9,
+        totalDuration: 10,
+        averageDuration: 5,
+        lyftLineCount: 1,
+        primeTimeTipTotal: 4,
+        primeTimeCount: 2,
+        averagePrimeTimeTipAmount: 2,
+        totalVoluntaryTipAmount: 3,
+        averageVoluntaryTipAmount: 1.5,
+        averageRideDistance: 0.95,
+        averageOverallTipAmount: 2.3333333333333335
+    };
+    
+    t.deepEqual(report, expectedReport);
+    t.end();
+
 });

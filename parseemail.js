@@ -28,6 +28,7 @@ var parseLyftEmail = function(html) {
         try {
             parsedEmail[k] = lyftEmailFields[k](lyftEmailDom);
         } catch (e) {
+            parsedEmail[k] = null;
             console.log(e);
         }
     }
@@ -49,22 +50,30 @@ var parseDropoffAddress = function($) {
     return $('td:contains("Dropoff:")').next().text().trim();
 };
 
+
+// Distance and duration are not available for Lyft Lines so return null in those cases to suppress exception.
 var parseDistance = function($) {
     var distanceString = $('i:contains("mi &")').last().html();
+    if (distanceString === null) {
+        return null;
+    }
     // '0.7 mi &amp; 4 min'
     var ampersandIndex = distanceString.indexOf('&amp;');
     var distanceMilesString = distanceString.substring(0, ampersandIndex);
     var distanceMilesFloat = parseFloat(distanceMilesString);
     return distanceMilesFloat;
-}
+};
 
 var parseDuration = function($) {
     var distanceAndDuration = $('i:contains("mi &")').last().html();
+    if (distanceAndDuration === null) {
+        return null;
+    }
     // '0.7 mi &amp; 4 min'
     var durationString = distanceAndDuration.split(';')[1].replace(' min', '');
     var durationMinutes = parseInt(durationString);
     return durationMinutes;
-}
+};
 
 var parseTip = function($) {
     var tipRow = $('tr:contains("Tip:")').last();
