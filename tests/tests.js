@@ -96,7 +96,6 @@ test('lyft report - two emails', function(t) {
     var emailList = [parsedLyftEmail, parsedLyftLineEmail, parsedPrimeTimeAndRegularTipEmail];
 
     var report = lyftReport.generateLyftReport(emailList);
-    console.log(report);
     var expectedReport = { totalRides: 3,
         totalCost: 28,
         averageCost: 9.333333333333334,
@@ -116,7 +115,7 @@ test('lyft report - two emails', function(t) {
         averageRideDistance: 0.95,
         averageOverallTipAmount: 2.3333333333333335
     };
-    
+
     t.deepEqual(report, expectedReport);
     t.end();
 
