@@ -21,7 +21,8 @@ var parseLyftEmail = function(html) {
         primeTimeTipPercentage: parsePrimeTimeTipPercentage,
         totalCharge: parseTotalCharge,
         rideEndTime: parseRideEndTime,
-        driverPhotoUrl: parseDriverPhotoUrl
+        driverPhotoUrl: parseDriverPhotoUrl,
+        isCanceled: parseIsCanceled
     };
 
     for (var k in lyftEmailFields) {
@@ -32,12 +33,18 @@ var parseLyftEmail = function(html) {
             console.log(e);
         }
     }
-    return parsedEmail
+    // the cost of the ride is arguable the most important piece of info.
+    // if we're missing it, disregard this ride because we're probably missing the other info too.
+    if (parsedEmail.totalCharge === null && !parsedEmail.isCanceled) {
+        return null;
+    } else {
+        return parsedEmail
+    }
 };
 
 var parseDriverName = function($) {
     // lyft line email uses an h3
-    var nameText = $('h1:contains("Thanks for")').text() || $('h3:contains("Thanks for")').text()
+    var nameText = $('h1:contains("Thanks for")').text() || $('h3:contains("Thanks for")').text();
     var driverName = S(nameText).between('Thanks for riding with ', '!').toString();
     return driverName;
 };
@@ -89,39 +96,47 @@ var parsePrimeTimeTip = function($) {
     var tipAmount = tipRow.children().last().text().replace('$', '');
     // warning: floats for money
     return parseFloat(tipAmount) || null;
-}
+};
 
 var parseIsLyftLine = function($) {
     return $('td:contains("Lyft Line:")').length > 0;
-}
+};
 
 var parsePrimeTimeTipPercentage = function($) {
     var percentageCell = $('td:contains("Prime Time Tip was included ")').last().text();
     var percentage = S(percentageCell).between('A ', '%');
     return parseInt(percentage) || null;
-}
+};
 
 var parseTotalCharge = function($) {
     var totalRow = $('tr:contains("Total charged to")').last();
     var totalAmount = totalRow.children().last().text().replace('$', '');
     // warning: floats for money
     return parseFloat(totalAmount);
-}
+};
 
 var parseRideEndTime = function($) {
     var rideEndDateString = $('i:contains("Ride ending ")').last().text().replace('Ride ending ', '');
-    // slightly different selector for lyft lines
+    // slightly different selector for lyft lines and newer emails
     if (!rideEndDateString) {
         rideEndDateString = $('p:contains("Line ending ")').last().text().replace('Line ending ', '');
     }
+    if (!rideEndDateString) {
+        rideEndDateString = $('p:contains("Ride ending ")').last().text().replace('Ride ending ', '');
+    }
     //todo: figure out time zone and return a true date
     return rideEndDateString;
-}
+};
 
 var parseDriverPhotoUrl = function($) {
     return $('img[alt*="Photo of"]').attr('src');
 };
 
+
+var parseIsCanceled = function($) {
+    //todo: multicurrency
+    return $('h1:contains("$5 Cancelation fee")').length > 0;
+};
 
 module.exports = {
     parseDriverName: parseDriverName,
@@ -136,5 +151,6 @@ module.exports = {
     parseTotalCharge: parseTotalCharge,
     parseRideEndTime: parseRideEndTime,
     parseDriverPhotoUrl: parseDriverPhotoUrl,
-    parseLyftEmail: parseLyftEmail
+    parseLyftEmail: parseLyftEmail,
+    parseIsCanceled: parseIsCanceled
 };

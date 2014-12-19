@@ -12,6 +12,9 @@ var lyftLineEmailDom = cheerio.load(lyftLineEmail);
 
 var primeTimeAndRegularTipEmail = fs.readFileSync('email3.html', 'utf-8');
 
+var canceledLyftEmail = fs.readFileSync('email4.html', 'utf-8');
+var canceledLyftEmailDom = cheerio.load(canceledLyftEmail);
+
 test('lyft email - driver name', function (t) {
     t.equal(parser.parseDriverName(lyftEmailDom), 'Kelly');
     t.equal(parser.parseDriverName(lyftLineEmailDom), 'Azam');
@@ -80,11 +83,18 @@ test('lyft email - driver photo url', function (t) {
     t.end();
 });
 
+test('lyft email - ride canceled', function (t) {
+    t.equal(parser.parseIsCanceled(canceledLyftEmailDom), true);
+    t.equal(parser.parseIsCanceled(lyftLineEmailDom), false);
+    t.equal(parser.parseIsCanceled(lyftEmailDom), false);
+    t.end();
+});
+
 test('lyft email - entire email', function (t) {
     var parsedEmail = parser.parseLyftEmail(lyftEmail);
     // all the individual parsing functions are tested above, not gonna duplicate here.
     // just spot check for the expected number of fields and the first one
-    t.equal(Object.keys(parsedEmail).length, 12);
+    t.equal(Object.keys(parsedEmail).length, 13);
     t.equal(parsedEmail['driverName'], 'Kelly');
     t.end();
 });

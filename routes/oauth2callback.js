@@ -18,11 +18,7 @@ router.get('/', function(req, res) {
     var authCode = req.param('code');
     var totalMessages = 0;
     var processEmails = function(error, response) {
-        console.log('email results:');
-        console.log(response);
-
         totalMessages = response.messages.length;
-        var messages = [];
         response.messages.forEach(function(message) {
             console.log('downloading message ' + message.id);
             var params = {
@@ -39,7 +35,6 @@ router.get('/', function(req, res) {
 
         var encodedBody = response.payload.parts[1].body.data;
         var decodedBody = new Buffer(encodedBody, 'base64').toString('utf-8');
-        console.log(decodedBody);
         messages.push(decodedBody);
         if (messages.length >= totalMessages) {
             console.log('received all messages');
@@ -48,17 +43,19 @@ router.get('/', function(req, res) {
             // Array.forEach is blocking
             messages.forEach(function(message, i) {
                 var parsedLyftEmail = parseEmail.parseLyftEmail(message);
-                parsedMessages.push(parsedLyftEmail);
+                if (parsedLyftEmail !== null) {
+                    parsedMessages.push(parsedLyftEmail);
+                }
             });
-            var lyftReport = lyftReport.generateLyftReport(parsedMessages);
-            res.send(JSON.stringify(lyftReport));
+            var report = lyftReport.generateLyftReport(parsedMessages);
+            var reportAndRides = {
+                report: report,
+                rides: parsedMessages
+            };
+            res.send(JSON.stringify(reportAndRides));
         }
     };
 
-    //if (req.session.authCode) {
-    //    res.send('authCode saved previously in session: ' + req.session.authCode);
-    //    return;
-    //}
     oauth2Client.getToken(authCode, function(err, tokens) {
         // Now tokens contains an access_token and an optional refresh_token. Save them.
         req.session.authCode = authCode;

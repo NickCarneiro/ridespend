@@ -7,7 +7,9 @@ var generateLyftReport = function(rides) {
         return null;
     }
 
-    var totalRides = rides.length;
+    // count rides as we go. An email from lyft might be full of nulls.
+    var totalRides = 0;
+
     var totalCost = 0;
     var mostExpensiveRide = 0;
     var leastExpensiveRide = 0;
@@ -22,10 +24,16 @@ var generateLyftReport = function(rides) {
     var totalDuration = 0;
     var ridesWithDuration = 0;
     var ridesWithDistance = 0;
+    var canceledRideCount = 0;
 
     rides.forEach(function(ride, i) {
-        console.log('Ride with ' + ride.driverName);
-        totalCost += ride.totalCharge;
+        if (ride.totalCharge !== null) {
+            totalRides += 1;
+        }
+        if (ride.totalCharge) {
+            totalCost += ride.totalCharge;
+        }
+
         if (ride.distance !== null) {
             ridesWithDistance++;
             totalDistanceTraveled += ride.distance;
@@ -58,7 +66,12 @@ var generateLyftReport = function(rides) {
             voluntaryTipCount++;
             totalTipAmount += ride.tip;
         }
+
+        if (ride.isCanceled) {
+            canceledRideCount++;
+        }
     });
+
     var averageCost = parseFloat(totalCost) / totalRides;
     var averageRideDistance = parseFloat(totalDistanceTraveled) / ridesWithDistance;
     var averageDuration = parseFloat(totalDuration) / ridesWithDuration;
@@ -86,10 +99,12 @@ var generateLyftReport = function(rides) {
         totalVoluntaryTipAmount: totalTipAmount,
         averageVoluntaryTipAmount: averageVoluntaryTipAmount,
         averageRideDistance: averageRideDistance,
-        averageOverallTipAmount: averageOverallTipAmount
+        averageOverallTipAmount: averageOverallTipAmount,
+        canceledRideCount: canceledRideCount
     }
 
 };
+
 module.exports = {
     generateLyftReport: generateLyftReport
 };
