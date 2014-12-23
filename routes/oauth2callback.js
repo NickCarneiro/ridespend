@@ -69,7 +69,7 @@ router.get('/', function(req, res) {
 
         var params = {
             userId: emailAddress,
-            q: 'from:no-reply@lyftmail.com',
+            q: 'from:no-reply@lyftmail.com OR from:receipts@lyftmail.com ',
             auth: oauth2Client
         };
         gmail.users.messages.list(params, processEmails);
