@@ -1,18 +1,19 @@
+'use strict';
 var fs = require('fs');
 var test = require('tape');
 var cheerio = require('cheerio');
 var parser = require('../parseemail');
 var lyftReport = require('../lyftreport');
 
-var lyftEmail = fs.readFileSync('email1.html', 'utf-8');
+var lyftEmail = fs.readFileSync(__dirname + '/email1.html', 'utf-8');
 var lyftEmailDom = cheerio.load(lyftEmail);
 
-var lyftLineEmail = fs.readFileSync('email2.html', 'utf-8');
+var lyftLineEmail = fs.readFileSync(__dirname + '/email2.html', 'utf-8');
 var lyftLineEmailDom = cheerio.load(lyftLineEmail);
 
-var primeTimeAndRegularTipEmail = fs.readFileSync('email3.html', 'utf-8');
+var primeTimeAndRegularTipEmail = fs.readFileSync(__dirname + '/email3.html', 'utf-8');
 
-var canceledLyftEmail = fs.readFileSync('email4.html', 'utf-8');
+var canceledLyftEmail = fs.readFileSync(__dirname + '/email4.html', 'utf-8');
 var canceledLyftEmailDom = cheerio.load(canceledLyftEmail);
 
 test('lyft email - driver name', function (t) {
@@ -122,11 +123,12 @@ test('lyft report - two emails', function(t) {
         averagePrimeTimeTipAmount: 2,
         totalVoluntaryTipAmount: 3,
         averageVoluntaryTipAmount: 1.5,
+        canceledRideCount: 0,
         averageRideDistance: 0.95,
         averageOverallTipAmount: 2.3333333333333335
     };
 
-    t.deepEqual(report, expectedReport);
+    t.deepEquals(report, expectedReport);
     t.end();
 
 });

@@ -50,6 +50,13 @@ module.exports = function (grunt) {
           livereload: reloadPort
         }
       }
+    },
+    tape: {
+      options: {
+        pretty: true,
+        output: 'console'
+      },
+      files: ['tests/tests.js']
     }
   });
 
@@ -71,7 +78,9 @@ module.exports = function (grunt) {
         });
     }, 500);
   });
-  
+
+  grunt.loadNpmTasks('grunt-tape');
+  grunt.registerTask('test', ['tape']);
   grunt.registerTask('default', [
     'develop', 
     'watch'

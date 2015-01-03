@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "grunt test"
   },
   "dependencies": {
     "body-parser": "~1.4.3",
@@ -16,14 +17,16 @@
     "googleapis": "^1.0.21",
     "morgan": "~1.1.1",
     "serve-favicon": "~2.0.1",
-    "tape": "^3.0.3"
+    "string": "^3.0.0"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-develop": "~0.4.0",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-develop": "~0.4.0",
+    "grunt-tape": "0.0.2",
+    "load-grunt-tasks": "~1.0.0",
     "request": "~2.36.0",
-    "time-grunt": "~0.3.2",
-    "load-grunt-tasks": "~0.6.0"
+    "time-grunt": "^1.0.0",
+    "tape": "^3.0.3"
   }
 }
