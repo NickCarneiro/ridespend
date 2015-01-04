@@ -4,3 +4,4 @@ public/components
 .sass-cache
 config.js
 .idea
+build/

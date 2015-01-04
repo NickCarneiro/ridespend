@@ -1,80 +1,32 @@
 var express = require('express');
 var google = require('googleapis');
 var config = require('../config');
-var parseEmail = require('../parseemail');
-var lyftReport = require('../lyftreport');
+
 
 
 var router = express.Router();
-var gmail = google.gmail('v1');
+
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-    var emailAddress = 'burthawk101@gmail.com';
-    var messages = [];
+
     var OAuth2 = google.auth.OAuth2;
     var oauth2Client = new OAuth2(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI);
 
     var authCode = req.param('code');
-    var totalMessages = 0;
-    var processEmails = function(error, response) {
-        totalMessages = response.messages.length;
-        response.messages.forEach(function(message) {
-            console.log('downloading message ' + message.id);
-            var params = {
-                userId: emailAddress,
-                id: message.id,
-                auth: oauth2Client
-            };
-            gmail.users.messages.get(params, handleMessageResponse);
-        });
-    };
-
-    var handleMessageResponse = function(error, response) {
-        console.log('received message: ' + messages.length);
-
-        var encodedBody = response.payload.parts[1].body.data;
-        var decodedBody = new Buffer(encodedBody, 'base64').toString('utf-8');
-        messages.push(decodedBody);
-        if (messages.length >= totalMessages) {
-            console.log('received all messages');
-            var parsedMessages = [];
-
-            // Array.forEach is blocking
-            messages.forEach(function(message, i) {
-                var parsedLyftEmail = parseEmail.parseLyftEmail(message);
-                if (parsedLyftEmail !== null) {
-                    parsedMessages.push(parsedLyftEmail);
-                }
-            });
-            var report = lyftReport.generateLyftReport(parsedMessages);
-            var reportAndRides = {
-                report: report,
-                rides: parsedMessages
-            };
-            res.send(JSON.stringify(reportAndRides));
-        }
-    };
 
     oauth2Client.getToken(authCode, function(err, tokens) {
-        // Now tokens contains an access_token and an optional refresh_token. Save them.
-        req.session.authCode = authCode;
-        if(!err) {
-            console.log('settings tokens');
+        if (!err) {
+            // Now tokens contains an access_token and an optional refresh_token. Save them.
+            req.session.tokens = tokens;
+            console.log('setting tokens');
             console.log(tokens);
-            oauth2Client.setCredentials(tokens);
+
         } else {
             console.log('token error');
         }
-
-        var params = {
-            userId: emailAddress,
-            q: 'from:no-reply@lyftmail.com OR from:receipts@lyftmail.com ',
-            auth: oauth2Client
-        };
-        gmail.users.messages.list(params, processEmails);
+        res.render('report', { title: 'Lyft and Uber Spending Report', authUrl: url });
     });
-
 });
 
 

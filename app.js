@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/user');
 var oauth2callback = require('./routes/oauth2callback');
+var report = require('./routes/report');
 
 var app = express();
 
@@ -30,11 +31,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/oauth2callback', oauth2callback);
+app.use('/auth', oauth2callback);
+app.use('/report', report);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

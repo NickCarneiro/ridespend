@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
     access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
     scope: 'https://www.googleapis.com/auth/gmail.readonly'
   });
-  res.render('index', { title: 'WOOOO', authUrl: url });
+  res.render('index', { title: 'Lyft and Uber Spending Report', authUrl: url });
 });
 
 module.exports = router;

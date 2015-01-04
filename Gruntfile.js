@@ -57,7 +57,29 @@ module.exports = function (grunt) {
         output: 'console'
       },
       files: ['tests/tests.js']
-    }
+    },
+    copy: {
+      build: {
+        cwd: 'public',
+        src: [ '**' ],
+        dest: 'build',
+        expand: true
+      }
+    },
+    browserify: {
+      client: {
+        src: ['build/js/report.js'],
+        dest: 'build/js/report.js'
+      }
+    },
+    uglify: {
+      my_target: {
+        files: {
+          'build/js/report.js': ['build/js/report.js']
+        }
+      }
+    },
+    clean: ['build']
   });
 
   grunt.config.requires('watch.server.files');
@@ -78,11 +100,17 @@ module.exports = function (grunt) {
         });
     }, 500);
   });
-
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-tape');
+
   grunt.registerTask('test', ['tape']);
   grunt.registerTask('default', [
     'develop', 
     'watch'
   ]);
+  grunt.registerTask('build', ['clean', 'copy', 'browserify', 'uglify'])
+
 };
