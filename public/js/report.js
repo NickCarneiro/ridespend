@@ -1,4 +1,4 @@
 var $ = require('jquery-browserify');
 $(function() {
-    console.log('loaded');
+    console.log('I love browserify!');
 });

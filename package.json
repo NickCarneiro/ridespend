@@ -29,6 +29,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-develop": "~0.4.0",
     "grunt-tape": "0.0.2",
+    "grunt-watchify": "^0.1.0",
     "load-grunt-tasks": "~1.0.0",
     "request": "~2.36.0",
     "tape": "^3.0.3",
