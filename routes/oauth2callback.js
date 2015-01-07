@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
         } else {
             console.log('token error');
         }
-        res.render('report', { title: 'Lyft and Uber Spending Report', authUrl: url });
+        res.render('report', { title: 'Lyft and Uber Spending Report'});
     });
 });
 

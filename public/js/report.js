@@ -1,4 +1,12 @@
 var $ = require('jquery-browserify');
 $(function() {
-    console.log('I love browserify!');
+    var settings = {
+        success: function(res) {
+            console.log(res);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    };
+    $.ajax('/report', settings)
 });
