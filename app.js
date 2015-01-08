@@ -33,8 +33,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', routes);
-app.use('/auth', oauth2callback);
-app.use('/report', report);
+app.use('/report', oauth2callback);
+app.use('/api/report', report);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
