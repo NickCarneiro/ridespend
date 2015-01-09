@@ -14,7 +14,14 @@ router.get('/', function(req, res) {
     var oauth2Client = new OAuth2(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI);
 
     var authCode = req.param('code');
-
+    // typically the code param contains an authorization token from google.
+    // if it contains 'test', then set the token value to a magic value. If the
+    // report.js sees this value it sends dummy data for testing.
+    if (authCode === 'test') {
+        req.session.tokens = 'test';
+        res.render('report', { title: 'Lyft and Uber Spending Report'});
+        return;
+    }
     oauth2Client.getToken(authCode, function(err, tokens) {
         if (!err) {
             // Now tokens contains an access_token and an optional refresh_token. Save them.
@@ -23,7 +30,7 @@ router.get('/', function(req, res) {
             console.log(tokens);
 
         } else {
-            console.log('token error');
+            console.log('error getting tokens');
         }
         res.render('report', { title: 'Lyft and Uber Spending Report'});
     });

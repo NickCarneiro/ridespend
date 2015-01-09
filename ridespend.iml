@@ -6,7 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/node_modules" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/build/js" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ridespend node_modules" level="project" />
   </component>
 </module>

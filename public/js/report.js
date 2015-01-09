@@ -2,7 +2,7 @@ var $ = require('jquery-browserify');
 $(function() {
     var settings = {
         success: function(res) {
-            $('#message').text('report loaded');
+            $('#message').text(res);
             console.log(res);
         },
         error: function(e) {

@@ -1,3 +1,4 @@
+var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var google = require('googleapis');
@@ -14,8 +15,13 @@ router.get('/', function(req, res) {
     var messages = [];
     var oauth2Client = new OAuth2(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI);
     var tokens = req.session.tokens;
-    if (!tokens) {
+    if (tokens === 'test') {
+        var reportAndRides = fs.readFileSync(__dirname + '/../tests/lyftreport.json', 'utf-8');
+        res.send(reportAndRides);
+        return;
+    } else if (!tokens) {
         res.status(500).send(JSON.stringify({error: 'No tokens'}));
+        return;
     }
     oauth2Client.setCredentials(tokens);
     var params = {
