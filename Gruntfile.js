@@ -17,12 +17,6 @@ module.exports = function (grunt) {
         file: 'bin/www'
       }
     },
-    watchify: {
-      example: {
-        src: './public/**/*.js',
-        dest: 'build/js/report.js'
-      }
-    },
     watch: {
       options: {
         nospawn: true,
@@ -76,6 +70,10 @@ module.exports = function (grunt) {
       client: {
         src: ['build/js/report.js'],
         dest: 'build/js/report.js'
+      },
+      options: {
+        transform: ['brfs', 'hoganify'],
+        watch: true
       }
     },
     uglify: {
@@ -107,7 +105,6 @@ module.exports = function (grunt) {
     }, 500);
   });
   grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-watchify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -115,9 +112,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', ['tape']);
   grunt.registerTask('default', [
-    'watchify',
-    'develop', 
-    'watch'
+    'browserify',
+    'develop'
   ]);
   grunt.registerTask('build', ['clean', 'copy', 'browserify', 'uglify'])
 

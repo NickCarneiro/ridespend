@@ -1,8 +1,15 @@
 var $ = require('jquery-browserify');
+var fs = require('fs');
+var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverphoto.ms');
+var mustache = require('mustache');
 $(function() {
     var settings = {
         success: function(res) {
-            $('#message').text(res);
+            var rides = res.rides;
+
+            var renderedPhotos = mustache.render(photoTemplate, rides);
+
+            $('#message').html(renderedPhotos);
             console.log(res);
         },
         error: function(e) {
@@ -11,5 +18,5 @@ $(function() {
         }
     };
     $('#message').text('Downloading emails...');
-    $.ajax('/api/report', settings)
+    $.ajax('/api/report', settings);
 });
