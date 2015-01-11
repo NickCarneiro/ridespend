@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "grunt test"
+    "test": "node tests/tests.js"
   },
   "dependencies": {
     "body-parser": "~1.4.3",
@@ -16,7 +16,10 @@
     "express": "~4.4.5",
     "express-session": "~1.9.2",
     "googleapis": "^1.0.21",
-    "grunt-browserify": "^3.2.1",
+    "gulp-express": "^0.1.4",
+    "gulp-livereload": "^3.2.0",
+    "gulp-sass": "^1.2.4",
+    "gulp-util": "^3.0.2",
     "hogan.js": "^3.0.2",
     "hoganify": "^0.2.0",
     "jquery-browserify": "^1.8.1",
@@ -26,16 +29,7 @@
     "string": "^3.0.0"
   },
   "devDependencies": {
-    "grunt-browserify": "^3.2.1",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.7.0",
-    "grunt-contrib-uglify": "^0.7.0",
-    "grunt-develop": "~0.4.0",
-    "grunt-tape": "0.0.2",
-    "load-grunt-tasks": "~1.0.0",
     "request": "~2.36.0",
-    "tape": "^3.0.3",
-    "time-grunt": "^1.0.0"
+    "tape": "^3.0.3"
   }
 }
