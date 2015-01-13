@@ -1,6 +1,7 @@
 var $ = require('jquery-browserify');
 var fs = require('fs');
 var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverphoto.ms', 'utf-8');
+var titleTemplate = fs.readFileSync(__dirname + '/../templates/title.ms', 'utf-8');
 var mustache = require('mustache');
 $(function() {
     var settings = {
@@ -8,8 +9,10 @@ $(function() {
             var rides = JSON.parse(res);
             console.log('hi');
             var renderedPhotos = mustache.render(photoTemplate, rides);
+            $('#driver-photos').html(renderedPhotos);
 
-            $('#message').html(renderedPhotos);
+            var renderedTitle = mustache.render(titleTemplate, rides);
+            $('#title').html(renderedTitle)
             console.log(res);
         },
         error: function(e) {
