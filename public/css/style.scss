@@ -8,7 +8,8 @@ a {
 }
 
 .title {
-  font-size: 48px;
+  font-size: 72px;
+  font-weight: bold;
 }
 
 #driver-photos {
@@ -26,6 +27,7 @@ a {
   min-height: 50px;
   margin-bottom: 20px;
   border: 1px solid transparent;
+  border-top: none;
 }
 
 .navbar-brand {
@@ -34,4 +36,12 @@ a {
   padding: 15px 15px;
   font-size: 18px;
   line-height: 20px;
+}
+
+body {
+  padding-top: 0;
+}
+
+.footer {
+  text-align: center;
 }

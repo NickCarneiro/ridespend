@@ -12,7 +12,8 @@ $(function() {
             $('#driver-photos').html(renderedPhotos);
 
             var renderedTitle = mustache.render(titleTemplate, rides);
-            $('#title').html(renderedTitle)
+            $('#title').html(renderedTitle);
+            $('#message').empty();
             console.log(res);
         },
         error: function(e) {
