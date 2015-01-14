@@ -43,8 +43,11 @@ function bundle() {
 gulp.task('sass', function () {
     gulp.src('./public/css/*.scss')
         .pipe(sass())
-        .pipe(gulp.dest('./build/css'));
+        .pipe(gulp.dest('./build/css'))
+        .pipe(livereload());
 });
+
+gulp.watch('./public/css/*.scss', ['sass']);
 
 gulp.task('server', function () {
     // Start the server at the beginning of the task
