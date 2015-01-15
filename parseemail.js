@@ -1,5 +1,6 @@
 var S = require('string');
 var cheerio = require('cheerio');
+var moment = require('moment');
 
 
 /**
@@ -124,8 +125,17 @@ var parseRideEndTime = function($) {
     if (!rideEndDateString) {
         rideEndDateString = $('p:contains("Ride ending ")').last().text().replace('Ride ending ', '');
     }
-    //todo: figure out time zone and return a true date
-    return rideEndDateString;
+
+    // now we have the month and day, we can get the year from the copyright notice
+    // at the bottom of the email.
+    var footerLine = $('div:contains("548 Market St #68514")').last().text();
+    if (!footerLine) {
+        footerLine = $('span:contains("548 Market St #68514")').last().text();
+    }
+    var rideEndYear = footerLine.match(/\d{4}/);
+    rideEndDateString += ' ' + rideEndYear;
+    var momentDate = moment(rideEndDateString, 'MMM DD at hh:mm A YYYY');
+    return momentDate.toDate();
 };
 
 var parseDriverPhotoUrl = function($) {

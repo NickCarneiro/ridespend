@@ -73,8 +73,14 @@ test('lyft email - total charge', function (t) {
 });
 
 test('lyft email - ride end time', function (t) {
-    t.equal(parser.parseRideEndTime(lyftEmailDom), 'June 19 at 11:39 PM');
-    t.equal(parser.parseRideEndTime(lyftLineEmailDom), 'December 5 at 8:15 PM');
+    var expectedDate = new Date(2014, 5, 19, 23, 39);
+    var actualDate = parser.parseRideEndTime(lyftEmailDom);
+    // the plus is a hack to convert dates to millis
+    t.equal(+actualDate, +expectedDate);
+
+    var expectedDate2 = new Date(2014, 11, 5, 20, 15);
+    var actualDate2 = parser.parseRideEndTime(lyftLineEmailDom);
+    t.equal(+actualDate2, +expectedDate2);
     t.end();
 });
 
