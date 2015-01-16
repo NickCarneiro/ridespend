@@ -1,3 +1,4 @@
+var numeral = require('numeral');
 /**
  *
  * @param rides array of ride objects generated in parseemail.js
@@ -83,23 +84,23 @@ var generateLyftReport = function(rides) {
 
     return {
         totalRides: totalRides,
-        totalCost: totalCost,
-        averageCost: averageCost,
+        totalCost: numeral(totalCost).format('$0,0.00'),
+        averageCost: numeral(averageCost).format('$0,0.00'),
         mostExpensiveRide:  mostExpensiveRide,
         leastExpensiveRide: leastExpensiveRide,
         longestRide: longestRide,
         shortestRide: shortestRide,
-        totalDistanceTraveled: totalDistanceTraveled,
-        totalDuration: totalDuration,
-        averageDuration: averageDuration,
+        totalDistanceTraveled: numeral(totalDistanceTraveled).format('0,0.0'),
+        totalDuration: numeral(totalDuration).format('0,0'),
+        averageDuration: numeral(averageDuration).format('0,0'),
         lyftLineCount: lyftLineCount,
-        primeTimeTipTotal: primeTimeTipTotal,
+        primeTimeTipTotal: numeral(primeTimeTipTotal).format('$0,0.00'),
         primeTimeCount: primeTimeCount,
-        averagePrimeTimeTipAmount: averagePrimeTimeTipAmount,
-        totalVoluntaryTipAmount: totalTipAmount,
-        averageVoluntaryTipAmount: averageVoluntaryTipAmount,
-        averageRideDistance: averageRideDistance,
-        averageOverallTipAmount: averageOverallTipAmount,
+        averagePrimeTimeTipAmount: numeral(averagePrimeTimeTipAmount).format('$0,0.00'),
+        totalVoluntaryTipAmount: numeral(totalTipAmount).format('$0,0.00'),
+        averageVoluntaryTipAmount: numeral(averageVoluntaryTipAmount).format('$0,0.00'),
+        averageRideDistance: numeral(averageRideDistance).format('0,0.00'),
+        averageOverallTipAmount: numeral(averageOverallTipAmount).format('$0,0.00'),
         canceledRideCount: canceledRideCount
     }
 

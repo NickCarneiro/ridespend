@@ -114,24 +114,24 @@ test('lyft report - two emails', function(t) {
 
     var report = lyftReport.generateLyftReport(emailList);
     var expectedReport = { totalRides: 3,
-        totalCost: 28,
-        averageCost: 9.333333333333334,
+        totalCost: '$28.00',
+        averageCost: '$9.33',
         mostExpensiveRide: 1,
         leastExpensiveRide: 0,
         longestRide: 2,
         shortestRide: 0,
-        totalDistanceTraveled: 1.9,
-        totalDuration: 10,
-        averageDuration: 5,
+        totalDistanceTraveled: '1.9',
+        totalDuration: '10',
+        averageDuration: '5',
         lyftLineCount: 1,
-        primeTimeTipTotal: 4,
+        primeTimeTipTotal: '$4.00',
         primeTimeCount: 2,
-        averagePrimeTimeTipAmount: 2,
-        totalVoluntaryTipAmount: 3,
-        averageVoluntaryTipAmount: 1.5,
+        averagePrimeTimeTipAmount: '$2.00',
+        totalVoluntaryTipAmount: '$3.00',
+        averageVoluntaryTipAmount: '$1.50',
         canceledRideCount: 0,
-        averageRideDistance: 0.95,
-        averageOverallTipAmount: 2.3333333333333335
+        averageRideDistance: '0.95',
+        averageOverallTipAmount: '$2.33'
     };
 
     t.deepEquals(report, expectedReport);
