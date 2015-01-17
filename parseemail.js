@@ -34,6 +34,12 @@ var parseLyftEmail = function(html) {
             console.log(e);
         }
     }
+
+    // create nicely formatted strings for displaying
+    // I would much prefer to do this in a template like a django filter
+
+    parsedEmail.formattedDate = moment(parsedEmail.rideEndTime).format('MMMM Do YYYY');
+
     // the cost of the ride is arguable the most important piece of info.
     // if we're missing it, disregard this ride because we're probably missing the other info too.
     if (parsedEmail.totalCharge === null && !parsedEmail.isCanceled) {

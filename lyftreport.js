@@ -71,6 +71,7 @@ var generateLyftReport = function(rides) {
         if (ride.isCanceled) {
             canceledRideCount++;
         }
+
     });
 
     var averageCost = parseFloat(totalCost) / totalRides;
