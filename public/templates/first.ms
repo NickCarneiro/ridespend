@@ -1,0 +1,1 @@
+Your first Lyft was on {{formattedDate}}.
