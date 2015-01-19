@@ -64,6 +64,7 @@ router.get('/', function(req, res) {
                         report: report,
                         rides: parsedMessages
                     };
+                    console.log('sending report and rides');
                     res.send(JSON.stringify(reportAndRides));
                 }
             };

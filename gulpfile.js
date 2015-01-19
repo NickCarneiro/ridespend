@@ -49,11 +49,14 @@ gulp.task('sass', function () {
 
 gulp.watch('./public/css/*.scss', ['sass']);
 
+
+
 gulp.task('server', function () {
     // Start the server at the beginning of the task
     server.run({
-        file: 'bin/www'
+        file: './app.js'
     });
+    gulp.watch(['app.js'], [server.run]);
     livereload.listen();
 });
 
