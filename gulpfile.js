@@ -53,12 +53,17 @@ gulp.watch('./public/css/*.scss', ['sass']);
 
 gulp.task('server', function () {
     // Start the server at the beginning of the task
-    server.run({
-        file: './app.js'
-    });
-    gulp.watch(['app.js'], [server.run]);
+    gulp.watch(['app.js', 'routes/*.js', '*.js'], ['express-run']);
     livereload.listen();
 });
 
+// workaround for trouble discussed here:
+// https://github.com/gimm/gulp-express/issues/3
+gulp.task('express-run', function () {
+    server.run({
+        file: 'app.js'
+    });
+});
+
 // The default task (called when you run `gulp` from cli)
-gulp.task('default', ['sass', 'js', 'server']);
+gulp.task('default', ['sass', 'js', 'server', 'express-run']);
