@@ -1,1 +1,1 @@
-Your first Lyft was on {{formattedDate}}.
+Your first Lyft was on {{dateFormatted}}.

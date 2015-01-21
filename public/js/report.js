@@ -4,10 +4,13 @@ var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverphoto.ms', 
 var titleTemplate = fs.readFileSync(__dirname + '/../templates/title.ms', 'utf-8');
 var firstRideTemplate = fs.readFileSync(__dirname + '/../templates/first.ms', 'utf-8');
 var mustache = require('mustache');
+var moment = require('moment');
+
 $(function() {
     var settings = {
         success: function(res) {
             var reportAndRides = JSON.parse(res);
+            formatDisplayStrings(reportAndRides);
             console.log('hi');
             var renderedPhotos = mustache.render(photoTemplate, reportAndRides);
             $('#driver-photos').html(renderedPhotos);
@@ -33,4 +36,12 @@ $(function() {
 
 var getFirstRide = function(rides) {
     return rides[rides.length - 1];
+};
+
+var formatDisplayStrings = function(reportAndRides) {
+    var rides = reportAndRides.rides;
+    rides.forEach(function(ride, i) {
+        ride.dateFormatted = moment(ride.rideEndTime).format('MMMM Do, YYYY');
+    });
+
 };
