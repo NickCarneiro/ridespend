@@ -40,8 +40,18 @@ a {
 
 body {
   padding-top: 0;
+  font-family: 'EB Garamond', serif;
 }
 
 .footer {
   text-align: center;
+}
+
+p {
+  font-size: 30px;
+  padding-bottom: 30px;
+}
+
+.address {
+  white-space: nowrap;
 }
