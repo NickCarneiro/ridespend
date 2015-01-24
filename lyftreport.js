@@ -74,6 +74,7 @@ var generateLyftReport = function(rides) {
 
     });
 
+    var costPerMile = parseFloat(totalCost) / totalDistanceTraveled;
     var averageCost = parseFloat(totalCost) / totalRides;
     var averageRideDistance = parseFloat(totalDistanceTraveled) / ridesWithDistance;
     var averageDuration = parseFloat(totalDuration) / ridesWithDuration;
@@ -102,7 +103,8 @@ var generateLyftReport = function(rides) {
         averageVoluntaryTipAmount: numeral(averageVoluntaryTipAmount).format('$0,0.00'),
         averageRideDistance: numeral(averageRideDistance).format('0,0.00'),
         averageOverallTipAmount: numeral(averageOverallTipAmount).format('$0,0.00'),
-        canceledRideCount: canceledRideCount
+        canceledRideCount: canceledRideCount,
+        costPerMile: costPerMile
     }
 
 };
