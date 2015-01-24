@@ -3,6 +3,7 @@ var fs = require('fs');
 var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverphoto.ms', 'utf-8');
 var titleTemplate = fs.readFileSync(__dirname + '/../templates/title.ms', 'utf-8');
 var firstRideTemplate = fs.readFileSync(__dirname + '/../templates/first.ms', 'utf-8');
+var rideTableTemplate = fs.readFileSync(__dirname + '/../templates/table.ms', 'utf-8');
 var mustache = require('mustache');
 var moment = require('moment');
 var numeral = require('numeral');
@@ -35,6 +36,9 @@ $(function() {
             };
             var firstRideHtml = mustache.render(firstRideTemplate, storyParams);
             $('#first-ride').html(firstRideHtml);
+
+            var rideTableHtml = mustache.render(rideTableTemplate, reportAndRides);
+            $('#ride-table').html(rideTableHtml);
 
             $('#message').empty();
             console.log(res);
