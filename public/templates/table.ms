@@ -40,7 +40,7 @@
             {{ driverName }}
         </td>
         <td>
-            {{ rideEndTime }}
+            {{ dateFormatted }}
         </td>
         <td>
             {{ distance }}

@@ -82,6 +82,26 @@ var formatDisplayStrings = function(reportAndRides) {
         }
         ride.tipFormatted = numeral(ride.tip).format('$0.00');
         ride.totalChargeFormatted = numeral(ride.totalCharge).format('$0.00');
+
+        if (!ride.primeTimeTip) {
+            ride.primeTimeTip = '-';
+        }
+        if (!ride.primeTimeTipPercentage) {
+            ride.primeTimeTipPercentage = '-';
+        }
+        if (ride.isLyftLine) {
+            ride.isLyftLine = '✓';
+        } else {
+            ride.isLyftLine = '-';
+        }
+
+        if (!ride.duration) {
+            ride.duration = '-';
+        }
+
+        if (!ride.distance) {
+            ride.distance = '-';
+        }
     });
 
 };
