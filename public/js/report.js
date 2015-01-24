@@ -1,9 +1,11 @@
 var $ = require('jquery-browserify');
 var fs = require('fs');
-var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverphoto.ms', 'utf-8');
+var photoTemplate = fs.readFileSync(__dirname + '/../templates/driverPhotoGrid.ms', 'utf-8');
 var titleTemplate = fs.readFileSync(__dirname + '/../templates/title.ms', 'utf-8');
-var firstRideTemplate = fs.readFileSync(__dirname + '/../templates/first.ms', 'utf-8');
+var firstRideTemplate = fs.readFileSync(__dirname + '/../templates/story.ms', 'utf-8');
 var rideTableTemplate = fs.readFileSync(__dirname + '/../templates/table.ms', 'utf-8');
+var firstDriverPhotoTemplate = fs.readFileSync(__dirname + '/../templates/firstDriverPhoto.ms', 'utf-8');
+
 var mustache = require('mustache');
 var moment = require('moment');
 var numeral = require('numeral');
@@ -23,6 +25,10 @@ $(function() {
             //$('#title').html(renderedTitle);
 
             var firstRide = getFirstRide(reportAndRides.rides);
+
+            var renderedFirstDriverPhoto = mustache.render(firstDriverPhotoTemplate, firstRide);
+            $('#first-driver-photo').html(renderedFirstDriverPhoto);
+
             var additionalRides = report.totalRides - 1;
             var distanceWords = numbered.stringify(Math.round(firstRide.distance));
             var durationWords = numbered.stringify(firstRide.duration);
