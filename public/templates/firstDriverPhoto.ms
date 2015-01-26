@@ -1,1 +1,1 @@
-<img class="driver-photo" src="{{ driverPhotoUrl }}">
+<img class="driver-photo img-responsive" src="{{ driverPhotoUrl }}">
