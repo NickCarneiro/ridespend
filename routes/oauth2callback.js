@@ -30,6 +30,7 @@ router.get('/', function(req, res) {
             console.log(tokens);
 
         } else {
+            console.log(err);
             console.log('error getting tokens');
         }
         res.render('report', { title: 'Lyft and Uber Spending Report'});

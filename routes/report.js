@@ -7,7 +7,7 @@ var lyftReport = require('../lyftreport');
 var config = require('../config');
 
 var gmail = google.gmail('v1');
-var emailAddress = 'burthawk101@gmail.com';
+var emailAddress = 'me';
 var OAuth2 = google.auth.OAuth2;
 
 /* GET users listing. */
