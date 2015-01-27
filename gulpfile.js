@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var del = require('del');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
@@ -10,15 +9,15 @@ var gutil = require('gulp-util');
 var livereload = require('gulp-livereload');
 var server = require('gulp-express');
 var sass = require('gulp-sass');
+var runSequence = require('run-sequence');
+var clean = require('gulp-clean');
 
 
 // Not all tasks need to use streams
 // A gulpfile is just another node program and you can use all packages available on npm
-gulp.task('clean', function(cb) {
-    // You can use multiple globbing patterns as you would with `gulp.src`
-    del(['build'], cb);
+gulp.task('gulp-clean', function() {
+    return gulp.src('./build').pipe(clean());
 });
-
 
 var bundler = watchify(browserify('./public/js/report.js', watchify.args));
 // add any other browserify options or transforms here
@@ -47,14 +46,12 @@ gulp.task('sass', function () {
         .pipe(livereload());
 });
 
-gulp.watch('./public/css/*.scss', ['sass']);
-
-
 
 gulp.task('server', function () {
     // Start the server at the beginning of the task
-    gulp.watch(['app.js', 'routes/*.js', '*.js'], ['express-run']);
+    //gulp.watch(['app.js', 'routes/*.js', '*.js'], ['express-run']);
     livereload.listen();
+    gulp.watch('./public/css/*.scss', ['sass']);
 });
 
 // workaround for trouble discussed here:
@@ -67,3 +64,9 @@ gulp.task('express-run', function () {
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['sass', 'js', 'server', 'express-run']);
+
+gulp.task('build', function(callback) {
+    runSequence('gulp-clean',
+        ['sass', 'js'],
+        callback);
+});
