@@ -59,7 +59,7 @@ $(function() {
 });
 
 var getFirstRide = function(rides) {
-    return rides[rides.length - 4];
+    return rides[rides.length - 1];
 };
 
 var formatDisplayStrings = function(reportAndRides) {
