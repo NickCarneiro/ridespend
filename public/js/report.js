@@ -11,6 +11,15 @@ var moment = require('moment');
 var numeral = require('numeral');
 var numbered = require('numbered');
 
+window.onerror = function(errorMessage, url, lineNumber) {
+    var error = {
+        message: errorMessage,
+        url: url,
+        lineNumber: lineNumber
+    };
+    $.post('/jserror', error);
+};
+
 $(function() {
     var settings = {
         success: function(res) {
@@ -109,3 +118,4 @@ var formatDisplayStrings = function(reportAndRides) {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+

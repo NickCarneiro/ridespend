@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var oauth2callback = require('./routes/oauth2callback');
 var report = require('./routes/report');
+var jserror = require('./routes/jserror');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use('/', routes);
 app.use('/report', oauth2callback);
 app.use('/api/report', report);
+app.use('/jserror', jserror);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
