@@ -55,16 +55,16 @@
             {{ dropoffAddress }}
         </td>
         <td>
-            {{ totalCharge }}
+            {{ totalChargeFormatted }}
         </td>
         <td>
-            {{ tip }}
+            {{ tipFormatted }}
         </td>
         <td>
-            {{ primeTimeTip }}
+            {{ primeTimeTipFormatted }}
         </td>
         <td>
-            {{ primeTimeTipPercentage }}
+            {{ primeTimeTipPercentageFormatted }}
         </td>
         <td>
             {{ isLyftLine }}

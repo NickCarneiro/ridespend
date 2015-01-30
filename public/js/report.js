@@ -93,10 +93,14 @@ var formatDisplayStrings = function(reportAndRides) {
         ride.totalChargeFormatted = numeral(ride.totalCharge).format('$0.00');
 
         if (!ride.primeTimeTip) {
-            ride.primeTimeTip = '-';
+            ride.primeTimeTipFormatted = '-';
+        } else {
+            ride.primeTimeTipFormatted = numeral(ride.primeTimeTip).format('$0.00');
         }
         if (!ride.primeTimeTipPercentage) {
-            ride.primeTimeTipPercentage = '-';
+            ride.primeTimeTipPercentageFormatted = '-';
+        } else {
+            ride.primeTimeTipPercentageFormatted = numeral(ride.primeTimeTipPercentage).divide(100).format('0%');
         }
         if (ride.isLyftLine) {
             ride.isLyftLine = '✓';
