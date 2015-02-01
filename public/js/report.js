@@ -26,7 +26,6 @@ $(function() {
             var reportAndRides = JSON.parse(res);
             var report = reportAndRides.report;
             formatDisplayStrings(reportAndRides);
-            console.log('hi');
             var renderedPhotos = mustache.render(photoTemplate, reportAndRides);
             $('#driver-photos').html(renderedPhotos);
 
@@ -56,7 +55,8 @@ $(function() {
             $('#ride-table').html(rideTableHtml);
 
             $('#message').empty();
-            console.log(res);
+
+            google.maps.event.addDomListener(window, 'load', initializeMap.bind(reportAndRides));
         },
         error: function(e) {
             $('#message').text('error loading report');
@@ -123,3 +123,69 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+
+function initializeMap() {
+    var mapOptions = {
+        center: { lat: -34.397, lng: 150.644},
+        zoom: 15
+    };
+    var map = new google.maps.Map(document.getElementById('google-map'),
+        mapOptions);
+    var rides = this.rides;
+    geocodeRides(rides, map);
+}
+
+function geocodeRides(rides, map) {
+    geocoder = new google.maps.Geocoder();
+    var firstRide = getFirstRide(rides);
+
+    geocoder.geocode({'address': firstRide.pickupAddress}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+            firstRide.pickupLocation = results[0].geometry.location;
+        } else if (statis == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+            console.log('over query limit')
+        }
+    });
+
+    geocoder.geocode({'address': firstRide.dropoffAddress}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+            firstRide.dropoffLocation = results[0].geometry.location;
+            connectPickupAndDropoffLocations(firstRide, map);
+        } else if (statis == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+            console.log('over query limit')
+        }
+    });
+}
+
+
+/**
+ * draws a line between 2 markers on a map if they both exist
+ */
+function connectPickupAndDropoffLocations(ride, map) {
+    if (!ride.pickupLocation || !ride.dropoffLocation) {
+        return;
+    }
+    new google.maps.Polyline({
+        path: [ride.pickupLocation, ride.dropoffLocation],
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        map: map
+    });
+
+    // zoom to include pickup and dropoff
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(ride.pickupLocation);
+    bounds.extend(ride.dropoffLocation);
+    map.fitBounds(bounds);
+}
